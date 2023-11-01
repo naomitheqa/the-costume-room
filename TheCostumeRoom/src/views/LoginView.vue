@@ -10,26 +10,33 @@
 </script>
 
 <template>
-  <div>
-    <div>
-      <h4>Welcome to the Costume Room!</h4>
+  <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Welcome to The Costume Room!</h2>
     </div>
-    <div>
-      <form action="">
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" action="">
         <div>
-          <label for="email">Email address</label>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
           <div>
-            <input type="email" name="email" v-model="email">
+            <input type="email" name="email" v-model="email" placeholder="janedoe@email.com" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
           </div>
         </div>
 
         <div>
-          <label for="password" name="password">Password</label>
-          <input type="password" v-model="password">
+          <div class="flex items-center justify-between">
+            <label for="password" name="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+            <div class="text-sm">
+                <a href="#" class="font-semibold text-blue-600 hover:text-blue-500">Forgot password?</a>
+            </div>
+          </div>
+          <div class="mt-2">
+            <input type="password" v-model="password" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+          </div>
         </div>
 
         <div>
-          <button @click="login(email, password)">Login</button>
+          <button @click="login(email, password)" class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Login</button>
         </div>
       </form>
     </div>
