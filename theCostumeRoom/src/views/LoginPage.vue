@@ -1,9 +1,11 @@
+<!-- Login Page -->
+
 <script setup>
   import { ref } from 'vue';
-  import axios from "axios";
-  import {useRouter} from "vue-router";
+  import { useRouter } from "vue-router";
+  import { login } from "@/auth/authService.js";
+  import { setToken } from "@/auth/tokenService.js";
 
-  const baseUrl = "https://the-costume-room-api.onrender.com";
   const router = useRouter();
 
   let email, password, loading, error, message;
@@ -13,56 +15,59 @@
   error = ref(null);
   message = ref(null);
 
-  const login = async () => {
+  const handleLogin = async () => {
     loading.value = true;
     error.value = null;
     message.value = null;
 
     try {
-      const response = await axios.post(`${baseUrl}/tcr/users/login`, {
-        email: email.value,
-        password: password.value,
-      });
-
       // Successful Login
-      const token = response.data.data.token;
-      localStorage.setItem('token', token);
-
+      const res = await login(email, password);
+      setToken(res.data.token);
       message.value = "Login successful";
+
       await router.push('/admin-dashboard');
     } catch (err){
       // Error with Login
       error.value = "Invalid email or password. Please try again.";
+      console.log(err)
     } finally {
       loading.value = false;
     }};
 </script>
 
 <template>
-  <div>
-    <form @submit.prevent="login">
-      <div id="email-field">
-        <label for="email">Email:</label>
-        <input type="email" v-model="email" required />
-      </div>
-      <div id="password-field">
-        <label for="password">Password:</label>
-        <input type="password" v-model="password" required />
-      </div>
-      <button type="submit" :disabled="loading">Login</button>
-    </form>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card p-4">
+          <h2 class="card-title text-center">TCR Login</h2>
+          <form @submit.prevent="handleLogin">
+            <div id="email-field" class="mb-3">
+              <label for="email">Email:</label>
+              <input type="email" v-model="email" class="form-control" id="email" required />
+            </div>
+            <div id="password-field" class="mb-3">
+              <label for="password">Password:</label>
+              <input type="password" v-model="password" class="form-control" id="password" required />
+            </div>
 
-    <div v-if="error" class="error"> {{ error }}</div>
-    <div v-if="message" class="message"> {{ message }}</div>
+            <div v-if="error" class="error alert alert-danger" role="alert"> {{ error }}</div>
+            <div v-if="message" class="message alert alert-success"> {{ message }}</div>
+
+            <button type="submit" :disabled="loading" class="btn btn-primary w-100">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-  .error {
-    color: red;
-  }
-
+.error {
+  color: darkred;
+}
   .message {
-    color: green;
+    color: darkgreen;
   }
 </style>

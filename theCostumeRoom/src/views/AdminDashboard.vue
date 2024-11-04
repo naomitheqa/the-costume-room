@@ -15,13 +15,14 @@ const error = ref(null);
 const getAllUsers = async () => {
   try {
     const token = localStorage.getItem("token");
+    console.log(token);
     const response = await axios.get(`${baseUrl}/tcr/admin/users`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
       }
     });
 
-    userList.value = response.data.users;
+    userList.value = response.data.data.users;
   } catch (err){
     error.value = "Failed to load users. Please try again later.";
   } finally {
