@@ -9,3 +9,11 @@ export const login = async (email, password) => {
   });
   return response.data;
 }
+
+export const getAllUsers = async (token) => {
+  const response = await axios.get(`${baseURL}/tcr/admin/users`, {
+    headers: {
+      Authorization: `${token}`,
+},})
+  return response.data;
+};

@@ -3,7 +3,7 @@
 <script setup>
   import { ref } from 'vue';
   import { useRouter } from "vue-router";
-  import { login } from "@/auth/authService.js";
+  import { login } from "@/auth/apiService.js";
   import { setToken } from "@/auth/tokenService.js";
 
   const router = useRouter();

@@ -4,25 +4,25 @@
 import {onMounted, ref} from 'vue';
 import axios from "axios";
 import {useRouter} from "vue-router";
+import AdminNav from "@/components/AdminNav.vue";
+import AddUserBtn from "@/components/AddUserBtn.vue";
+import AddUserForm from "@/components/AddUserForm.vue";
+import {getToken} from "@/auth/tokenService.js";
+import {getAllUsers} from "@/auth/apiService.js";
 
-const baseUrl = "https://the-costume-room-api.onrender.com";
 const router = useRouter();
 
 const userList = ref([]);
 const loading = ref(true );
 const error = ref(null);
+const showModal = ref(false);
 
-const getAllUsers = async () => {
+const getUserList = async () => {
   try {
-    const token = localStorage.getItem("token");
-    console.log(token);
-    const response = await axios.get(`${baseUrl}/tcr/admin/users`, {
-      headers: {
-        Authorization: `${token}`,
-      }
-    });
+    const token = getToken();
+    const res = await getAllUsers(token);
 
-    userList.value = response.data.data.users;
+    userList.value = res.data.users;
   } catch (err){
     error.value = "Failed to load users. Please try again later.";
   } finally {
@@ -30,36 +30,56 @@ const getAllUsers = async () => {
   }
 }
 
-onMounted(getAllUsers);
+onMounted(getUserList);
 </script>
 
 <template>
  <div>
-   <h1>Admin Dashboard</h1>
-   <h2>All Users</h2>
+   <admin-nav></admin-nav>
 
-   <div v-if="loading">Loading users...</div>
-   <div v-if="error" class="error">{{ error }}</div>
+   <div class="container mt-5">
+     <h2>All Users</h2>
 
-   <table v-if="userList.length">
-     <thead>
-       <tr>
-         <th>Name</th>
-         <th>Email</th>
-         <th>Expiry Date</th>
-       </tr>
-     </thead>
+     <div v-if="loading" class="container mt-5 placeholder-glow">
+       <!--Loading users...-->
+       <span class="placeholder col-12"></span>
+       <span class="placeholder col-12"></span>
+       <span class="placeholder col-12"></span>
+     </div>
+     <div v-if="error" class="error">{{ error }}</div>
 
-     <tbody>
-       <tr v-for="user in userList">
-         <td>{{ `${user.firstName} ${user.lastName}` }}</td>
-         <td>{{ user.email }}</td>
-         <td>{{ user.expiryDate }}</td>
-       </tr>
-     </tbody>
-   </table>
+     <!--Table-->
+     <div v-if="userList && userList.length" class="table-responsive">
+       <table v-if="userList.length" class="table table-hover table-striped table-bordered">
+         <thead>
+         <tr>
+           <th>Name</th>
+           <th>Email</th>
+           <th>Expiry Date</th>
+         </tr>
+         </thead>
 
-   <div v-else>No users found.</div>
+         <tbody>
+         <tr v-for="user in userList">
+           <td>{{ `${user.firstName} ${user.lastName}` }}</td>
+           <td>{{ user.email }}</td>
+           <td>{{ user.expiryDate }}</td>
+         </tr>
+         </tbody>
+       </table>
+       <div v-else>No users found.</div>
+     </div>
+
+     <div class="text-end">
+        <add-user-btn></add-user-btn>
+     </div>
+
+     <div>
+       <add-user-form :show-modal="showModal" @close="showModal = false"></add-user-form>
+     </div>
+   </div>
+
+
  </div>
 </template>
 
