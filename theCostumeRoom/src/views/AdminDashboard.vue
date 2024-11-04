@@ -1,3 +1,5 @@
+<!-- Admin Dashboard -->
+
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
@@ -61,5 +63,7 @@ onMounted(getAllUsers);
 </template>
 
 <style scoped>
-
+.message {
+  color: green;
+}
 </style>

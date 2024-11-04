@@ -25,7 +25,7 @@
       });
 
       // Successful Login
-      const token = response.data.token;
+      const token = response.data.data.token;
       localStorage.setItem('token', token);
 
       message.value = "Login successful";
