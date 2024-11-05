@@ -17,3 +17,18 @@ export const getAllUsers = async (token) => {
 },})
   return response.data;
 };
+
+export const addUser = async (token, user) => {
+  const response = await axios.post(`${baseURL}/tcr/admin/add-user`, {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    expiryDate: user.expiryDate,
+  },
+    {
+      headers: {
+        Authorization: `${token}`
+      },
+    });
+  return response.data;
+};

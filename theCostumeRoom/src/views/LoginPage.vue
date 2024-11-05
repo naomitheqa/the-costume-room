@@ -4,7 +4,7 @@
   import { ref } from 'vue';
   import { useRouter } from "vue-router";
   import { login } from "@/auth/apiService.js";
-  import { setToken } from "@/auth/tokenService.js";
+  import {TokenService} from "@/auth/tokenService.js";
 
   const router = useRouter();
 
@@ -23,7 +23,7 @@
     try {
       // Successful Login
       const res = await login(email, password);
-      setToken(res.data.token);
+      TokenService.setToken(res.data.token);
       message.value = "Login successful";
 
       await router.push('/admin-dashboard');
@@ -55,7 +55,10 @@
             <div v-if="error" class="error alert alert-danger" role="alert"> {{ error }}</div>
             <div v-if="message" class="message alert alert-success"> {{ message }}</div>
 
-            <button type="submit" :disabled="loading" class="btn btn-primary w-100">Login</button>
+            <button type="submit" :disabled="loading" class="btn btn-primary w-100">
+              <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              {{ loading ? "Trying the key..." : "Login" }}
+            </button>
           </form>
         </div>
       </div>

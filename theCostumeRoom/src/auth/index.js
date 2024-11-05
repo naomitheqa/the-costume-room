@@ -1,4 +1,4 @@
-import {removeToken} from "@/auth/tokenService.js";
+import {TokenService} from "@/auth/tokenService.js";
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
@@ -6,5 +6,5 @@ export const isAuthenticated = () => {
 };
 
 export const logout = () => {
-  removeToken();
+  TokenService.removeToken();
 }
