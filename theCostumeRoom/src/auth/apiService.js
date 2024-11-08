@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://the-costume-room-api.onrender.com";
+const baseURL = "http://localhost:8080";
 
 export const login = async (email, password) => {
   const response = await axios.post(`${baseURL}/tcr/users/login`, {
@@ -32,3 +32,20 @@ export const addUser = async (token, user) => {
     });
   return response.data;
 };
+
+export const addItem = async (token, item) => {
+  console.log(item.itemFile)
+  const response = await axios.post(`${baseURL}/tcr/items/add-item`, {
+    name: item.itemName,
+    description: item.itemDescription,
+    count: item.itemCount,
+    group: item.itemGroup,
+    file: item.itemFile,
+  },
+    {
+      headers: {
+        Authorization: `${token}`
+    },
+    });
+  return response.data;
+}

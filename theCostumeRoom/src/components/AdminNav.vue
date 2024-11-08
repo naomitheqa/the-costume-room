@@ -33,7 +33,7 @@ const handleLogout = () => {
             <router-link class="nav-link" to="/admin-dashboard">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/user-management">User Management</router-link>
+            <router-link class="nav-link" to="/item-management">Item Management</router-link>
           </li>
         </ul>
         <button class="btn btn-outline-light" @click="handleLogout">Logout</button>
